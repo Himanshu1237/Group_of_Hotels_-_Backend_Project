@@ -1,0 +1,16 @@
+{
+  "name": "group_of_hotels_-_backend_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gsap.js",
+  "dependencies": {
+    "nodejs": "^0.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node sever.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

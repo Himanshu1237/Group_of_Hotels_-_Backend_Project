@@ -13,11 +13,13 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    backdrop-filter: blur(5px);
+   
 }
 
 /* Header styles */
 header {
-    background-color: #fff;
+    /* background-color: #fff; */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: fixed;
     width: 100%;
@@ -32,18 +34,23 @@ nav {
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #1a1a1a;
+    /* color: #1a1a1a; */
+    color: aliceblue;
 }
 .nav-links {
     display: flex;
     list-style: none;
+    color: aliceblue;
 }
 .nav-links li {
     margin-left: 1.5rem;
+    font-weight: 500;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
 }
 .nav-links a {
     text-decoration: none;
-    color: #1a1a1a;
+    /* color: #1a1a1a; */
     transition: color 0.3s ease;
 }
 .nav-links a:hover {
