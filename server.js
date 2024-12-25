@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const querystring = require('querystring');
 
-const PORT = 3000;
+const PORT = 3001;
 
 const server = http.createServer((req, res) => {
     if (req.method === 'GET') {
@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'text/css' });
                 res.end(data);
             });
-        } else if (req.url.endsWith('.js')) { // Serve JS files (including gsap.js)
+        } else if (req.url.endsWith('.js')) { 
             const jsPath = path.join(__dirname, req.url);
             fs.readFile(jsPath, (err, data) => {
                 if (err) {
