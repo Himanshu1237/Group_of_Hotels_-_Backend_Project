@@ -7,62 +7,50 @@ const PORT = 3001;
 
 const server = http.createServer((req, res) => {
     if (req.method === 'GET') {
-        if (req.url === '/') {
-            fs.readFile(path.join(__dirname, 'login.html'), 'utf-8', (err, data) => {
-                if (err) {
-                    res.writeHead(500, { 'Content-Type': 'text/plain' });
-                    res.end('Error reading the login page');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(data);
-            });
-        } else if (req.url === '/index') {
-            fs.readFile(path.join(__dirname, 'index.html'), 'utf-8', (err, data) => {
-                if (err) {
-                    res.writeHead(500, { 'Content-Type': 'text/plain' });
-                    res.end('Error reading the index page');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(data);
-            });
-        } else if (req.url === '/register') {
-            fs.readFile(path.join(__dirname, 'register.html'), 'utf-8', (err, data) => {
-                if (err) {
-                    res.writeHead(500, { 'Content-Type': 'text/plain' });
-                    res.end('Error reading the registration page');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'text/html' });
-                res.end(data);
-            });
-        } else if (req.url.endsWith('.css')) {
-            const cssPath = path.join(__dirname, req.url);
-            fs.readFile(cssPath, (err, data) => {
-                if (err) {
-                    res.writeHead(404, { 'Content-Type': 'text/plain' });
-                    res.end('CSS file not found');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'text/css' });
-                res.end(data);
-            });
-        } else if (req.url.endsWith('.js')) { 
-            const jsPath = path.join(__dirname, req.url);
-            fs.readFile(jsPath, (err, data) => {
-                if (err) {
-                    res.writeHead(404, { 'Content-Type': 'text/plain' });
-                    res.end('JavaScript file not found');
-                    return;
-                }
-                res.writeHead(200, { 'Content-Type': 'application/javascript' });
-                res.end(data);
-            });
-        } else {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('Not Found');
+        const filePath = path.join(__dirname, req.url === '/' ? 'login.html' : req.url);
+        const extname = path.extname(filePath);
+        let contentType = 'text/html';
+
+        switch (extname) {
+            case '.js':
+                contentType = 'application/javascript';
+                break;
+            case '.css':
+                contentType = 'text/css';
+                break;
+            case '.json':
+                contentType = 'application/json';
+                break;
+            case '.png':
+                contentType = 'image/png';
+                break;
+            case '.jpg':
+                contentType = 'image/jpg';
+                break;
+            case '.wav':
+                contentType = 'audio/wav';
+                break;
+            case '.ico':
+                contentType = 'image/x-icon';
+                break;
         }
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    fs.readFile(path.join(__dirname, '404.html'), (err, data) => {
+                        res.writeHead(404, { 'Content-Type': 'text/html' });
+                        res.end(data, 'utf-8');
+                    });
+                } else {
+                    res.writeHead(500);
+                    res.end(`Server Error: ${err.code}`);
+                }
+            } else {
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(data, 'utf-8');
+            }
+        });
     } else if (req.method === 'POST') {
         if (req.url === '/login') {
             let body = '';
@@ -85,10 +73,10 @@ const server = http.createServer((req, res) => {
                     const user = users.find(u => u.username === username && u.password === password);
 
                     if (user) {
-                        res.writeHead(302, { 'Location': '/index' });
+                        res.writeHead(302, { 'Location': '/index.html' });
                         res.end();
                     } else {
-                        res.writeHead(302, { 'Location': '/register' });
+                        res.writeHead(302, { 'Location': '/register.html' });
                         res.end();
                     }
                 });
