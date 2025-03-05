@@ -38,6 +38,8 @@ app.get('/book', (req, res)=>{
     res.sendFile(path.join(__dirname, 'views/hotelbooking.html'));
 })
 
+
+
 app.get('/contact', (req, res)=>{
     res.sendFile(path.join(__dirname, 'views/privacy.html'));
 })
@@ -54,7 +56,7 @@ app.get('/UrbanOasis', (req, res)=>{
 });
 
 app.get('/Mountainescape', (req, res)=>{
-    res.sendFile(path.join(__dirname, 'views/Mountainescape.html        '));
+    res.sendFile(path.join(__dirname, 'views/Mountainescape.html'));
 });
 
 // Global middlewares
