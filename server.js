@@ -30,6 +30,33 @@ app.get('/about', (req, res)=>{
     res.sendFile(path.join(__dirname, 'views/AboutUs.html'));
 })
 
+app.get('/crismas', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/ChristmasOffer.html'));
+})
+
+app.get('/book', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/hotelbooking.html'));
+})
+
+app.get('/contact', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/privacy.html'));
+})
+
+app.get('/terms', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/terms.html'));
+})
+app.get('/beachfront', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/Beachfront.html'));
+});
+
+app.get('UrbanOasis', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/UrbanOasis.html'));
+});
+
+app.get('/Mountainescape', (req, res)=>{
+    res.sendFile(path.join(__dirname, 'views/Mountainescape.html        '));
+});
+
 // Global middlewares
 app.use(Logger);
 app.use(errorHandler);
