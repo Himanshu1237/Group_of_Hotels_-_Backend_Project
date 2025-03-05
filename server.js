@@ -49,7 +49,7 @@ app.get('/beachfront', (req, res)=>{
     res.sendFile(path.join(__dirname, 'views/Beachfront.html'));
 });
 
-app.get('UrbanOasis', (req, res)=>{
+app.get('/UrbanOasis', (req, res)=>{
     res.sendFile(path.join(__dirname, 'views/UrbanOasis.html'));
 });
 
