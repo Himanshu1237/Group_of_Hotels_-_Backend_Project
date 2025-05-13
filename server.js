@@ -5,6 +5,7 @@ const apiRoutes = require('./api/apiRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 const { Logger } = require('./middlewares/logger');
 const app = express();
+const hotels = require('./models/hotels.json');
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -23,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.render('index');
+    res.render('index', {title:"RoyalNest", hotels});
 });
 
 app.get('/register', (req, res) => {
@@ -38,9 +39,38 @@ app.get('/crismas', (req, res) => {
     res.render('ChristmasOffer');
 });
 
+
+const roomTypes = [
+    { value: "single", name: "Single" },
+    { value: "double", name: "Double" },
+    { value: "suite", name: "Suite" },
+    { value: "deluxe", name: "Deluxe" }
+];
+
 app.get('/book', (req, res) => {
-    res.render('hotelbooking');
+    const year = new Date().getFullYear();
+    const selectedHotel = req.query.hotel;
+    console.log("selectedHotel " + selectedHotel);
+    const imgURL = hotels.find(hotel => hotel.link === selectedHotel)?.image || '/images/default-image.jpg';
+    console.log("imgURL " + imgURL);
+    res.render('hotelbooking', {
+        title: "Book a Room",
+        activePage: "book",
+        hotels,
+        roomTypes,
+        year,
+        selectedHotel,
+        imgURL
+    });
 });
+
+app.post('/book', (req, res) => {
+    const { hotelName, checkInDate, checkOutDate, roomType } = req.body;
+    // Here you would typically handle the booking logic
+    console.log(`Booking request for ${hotelName} from ${checkInDate} to ${checkOutDate} in a ${roomType} room.`);
+    res.redirect('/home');
+});
+
 
 app.get('/contact', (req, res) => {
     res.render('privacy');
@@ -50,7 +80,7 @@ app.get('/terms', (req, res) => {
     res.render('terms');
 });
 
-app.get('/beachfront', (req, res) => {
+app.get('/Beachfront', (req, res) => {
     res.render('Beachfront');
 });
 
@@ -58,10 +88,16 @@ app.get('/UrbanOasis', (req, res) => {
     res.render('UrbanOasis');
 });
 
-app.get('/Mountainescape', (req, res) => {
-    res.render('Mountainescape');
+app.get('/MountainEscape', (req, res) => {
+    res.render('MountainEscape');
+});
+app.get('/TheRitzLondon', (req, res) => {
+    res.render('TheRitzLondon');
 });
 
+app.get('/TheRitzBali', (req, res) => {
+    res.render('TheRitzBali');
+});
 // Global middlewares
 app.use(Logger);
 app.use(errorHandler);

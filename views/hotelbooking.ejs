@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Stays - Hotel Booking</title>
+    <title> Hotel Booking</title>
     <link rel="stylesheet" href="/css/hotelbooking.css">
 </head>
+
 <body>
     <nav class="navbar">
         <div class="brand">Luxury Stays</div>
         <div class="nav-links">
             <a href="/home">Home</a>
-            <a href="/book" class="active">Hotels</a>
+            <a href="/book" class="<%= activePage === 'book' ? 'active' : '' %>">Hotels</a>
             <a href="/about">About</a>
             <a href="#contact">Contact</a>
         </div>
@@ -19,24 +21,29 @@
 
     <main class="container">
         <h1>Book Your Luxury Stay</h1>
-        
+
         <section class="booking-info">
             <h2>Booking Information</h2>
-            <p>Experience unparalleled luxury at our handpicked hotels. Whether you're looking for a beachfront paradise, an urban oasis, or a mountain escape, we have the perfect accommodation for you.</p>
-            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format" alt="Luxury Hotel Room" class="info-image">
+            <p>Experience unparalleled luxury at our handpicked hotels. Whether you're looking for a beachfront
+                paradise, an urban oasis, or a mountain escape, we have the perfect accommodation for you.</p>
+            <img src="<%= imgURL %>" alt="Luxury Hotel Room" class="info-image">
+
         </section>
 
         <section class="booking-form">
             <h2>Reserve Your Room</h2>
-            <form id="hotel-booking-form" >
+            <form id="hotel-booking-form">
                 <div class="form-group">
                     <label for="hotel">Select Hotel:</label>
                     <select id="hotel" name="hotel" required>
                         <option value="">Choose a hotel</option>
-                        <option value="beachfront">Beachfront Paradise</option>
-                        <option value="urban">Urban Oasis</option>
-                        <option value="mountain">Mountain Escape</option>
+                        <% hotels.forEach(hotel=> { %>
+                            <option value="<%= hotel.link %>" <%=selectedHotel===hotel.link ? 'selected' : '' %>>
+                                <%= hotel.name %>
+                            </option>
+                            <% }); %>
                     </select>
+
                 </div>
 
                 <div class="form-group">
@@ -58,9 +65,11 @@
                     <label for="room-type">Room Type:</label>
                     <select id="room-type" name="room-type" required>
                         <option value="">Select room type</option>
-                        <option value="standard">Standard Room</option>
-                        <option value="deluxe">Deluxe Room</option>
-                        <option value="suite">Luxury Suite</option>
+                        <% roomTypes.forEach(type=> { %>
+                            <option value="<%= type.value %>">
+                                <%= type.name %>
+                            </option>
+                            <% }); %>
                     </select>
                 </div>
 
@@ -90,7 +99,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2023 Luxury Stays. All rights reserved.</p>
+        <p>&copy; <%= year %> Luxury Stays. All rights reserved.</p>
     </footer>
 
     <script>
@@ -110,4 +119,5 @@
         });
     </script>
 </body>
+
 </html>

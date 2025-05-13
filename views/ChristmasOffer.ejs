@@ -66,22 +66,5 @@
         <p>🎄 Spread the Holiday Joy! 🎄</p>
         <p>Terms and conditions apply. Offers valid until December 25th.</p>
     </footer>
-
-    <script>
-        // JavaScript to load other documents using Node.js server
-        document.querySelectorAll('a[data-page]').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                fetch(this.getAttribute('data-page'))
-                    .then(response => response.text())
-                    .then(html => {
-                        document.open();
-                        document.write(html);
-                        document.close();
-                    })
-                    .catch(error => console.error('Error loading document:', error));
-            });
-        });
-    </script>
 </body>
 </html>
