@@ -1,35 +1,58 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
 const router = express.Router();
+const User = require('../models/userModel');  // Import the User model
 
+// POST login route
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
-router.post('/login', async(req, res)=>{
-    const {username, password} = req.body;
-    let data = await fs.readFileSync(path.join(__dirname, '../models/users.json'), 'utf-8');
-    data = await JSON.parse(data);
-    const user = data.find(user=>user.username===username && user.password===password);
-    if(user){
-      return res.redirect('/home');
-    }
-    else{
-        return res.redirect('/register');
+    try {
+        // Find user by username
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(401).send('User not found');
+        }
+
+        // Compare entered password with stored password
+        const isMatch = await user.matchPassword(password);
+        if (isMatch) {
+            // Successful login
+            return res.redirect('/home');
+        } else {
+            // Incorrect password
+            return res.status(401).send('Incorrect password');
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Internal Server Error');
     }
 });
 
-router.post('/register', async(req, res)=>{
-    const {username, password} = req.body;
-    let data = await fs.readFileSync(path.join(__dirname, '../models/users.json'), 'utf-8');
-    data = await JSON.parse(data);
-    const user = data.find(user=>user.username===username);
-    if(user){
-        return res.status(401).json({error: 'User already exists'});
+// POST register route
+router.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        // Check if user already exists
+        const existingUser = await User.findOne({ username });
+
+        if (existingUser) {
+            return res.status(401).json({ error: 'User already exists' });
+        }
+
+        // Create a new user
+        const newUser = new User({ username, password });
+
+        // Save the new user to MongoDB
+        await newUser.save();
+
+        // Redirect to home page after successful registration
+        return res.redirect('/home');
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Internal Server Error');
     }
-    else{
-        data.push({username, password});
-        await fs.writeFileSync(path.join(__dirname, '../models/users.json'), JSON.stringify(data));
-        res.redirect('/home');
-    }
-})
+});
 
 module.exports = router;

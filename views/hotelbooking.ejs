@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Hotel Booking</title>
+    <title>Hotel Booking</title>
     <link rel="stylesheet" href="/css/hotelbooking.css">
 </head>
 
@@ -27,33 +27,33 @@
             <p>Experience unparalleled luxury at our handpicked hotels. Whether you're looking for a beachfront
                 paradise, an urban oasis, or a mountain escape, we have the perfect accommodation for you.</p>
             <img src="<%= imgURL %>" alt="Luxury Hotel Room" class="info-image">
-
         </section>
 
         <section class="booking-form">
             <h2>Reserve Your Room</h2>
-            <form id="hotel-booking-form">
+
+            <!-- Updated form to post to /book -->
+            <form id="hotel-booking-form" action="/book" method="POST">
                 <div class="form-group">
                     <label for="hotel">Select Hotel:</label>
-                    <select id="hotel" name="hotel" required>
+                    <select id="hotel" name="hotelName" required>
                         <option value="">Choose a hotel</option>
-                        <% hotels.forEach(hotel=> { %>
-                            <option value="<%= hotel.link %>" <%=selectedHotel===hotel.link ? 'selected' : '' %>>
+                        <% hotels.forEach(hotel => { %>
+                            <option value="<%= hotel.link %>" <%= selectedHotel === hotel.link ? 'selected' : '' %>>
                                 <%= hotel.name %>
                             </option>
-                            <% }); %>
+                        <% }); %>
                     </select>
-
                 </div>
 
                 <div class="form-group">
                     <label for="check-in">Check-in Date:</label>
-                    <input type="date" id="check-in" name="check-in" required>
+                    <input type="date" id="check-in" name="checkInDate" required>
                 </div>
 
                 <div class="form-group">
                     <label for="check-out">Check-out Date:</label>
-                    <input type="date" id="check-out" name="check-out" required>
+                    <input type="date" id="check-out" name="checkOutDate" required>
                 </div>
 
                 <div class="form-group">
@@ -63,19 +63,17 @@
 
                 <div class="form-group">
                     <label for="room-type">Room Type:</label>
-                    <select id="room-type" name="room-type" required>
+                    <select id="room-type" name="roomType" required>
                         <option value="">Select room type</option>
-                        <% roomTypes.forEach(type=> { %>
-                            <option value="<%= type.value %>">
-                                <%= type.name %>
-                            </option>
-                            <% }); %>
+                        <% roomTypes.forEach(type => { %>
+                            <option value="<%= type.value %>"><%= type.name %></option>
+                        <% }); %>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="fullName" required>
                 </div>
 
                 <div class="form-group">
@@ -90,7 +88,7 @@
 
                 <div class="form-group">
                     <label for="special-requests">Special Requests:</label>
-                    <textarea id="special-requests" name="special-requests" rows="4"></textarea>
+                    <textarea id="special-requests" name="specialRequests" rows="4"></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">Book Now</button>
@@ -101,23 +99,6 @@
     <footer>
         <p>&copy; <%= year %> Luxury Stays. All rights reserved.</p>
     </footer>
-
-    <script>
-        // JavaScript to load other documents using Node.js server
-        document.querySelectorAll('a[data-page]').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                fetch(this.getAttribute('data-page'))
-                    .then(response => response.text())
-                    .then(html => {
-                        document.open();
-                        document.write(html);
-                        document.close();
-                    })
-                    .catch(error => console.error('Error loading document:', error));
-            });
-        });
-    </script>
 </body>
 
 </html>
