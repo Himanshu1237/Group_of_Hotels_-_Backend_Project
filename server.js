@@ -84,21 +84,31 @@ const roomTypes = [
     { value: "deluxe", name: "Deluxe" }
 ];
 
-app.get('/book', (req, res) => {
-    const year = new Date().getFullYear();
-    const selectedHotel = req.query.hotel;
-    const imgURL = hotels.find(hotel => hotel.link === selectedHotel)?.image || '/images/default-image.jpg';
+app.get('/book', async (req, res) => {
+  const year = new Date().getFullYear();
+  const selectedHotel = req.query.hotel;
+  const matchedHotel = hotels.find(hotel => hotel.link === selectedHotel);
+  const imgURL = matchedHotel ? matchedHotel.image : false;
+
+  try {
+    const bookings = await Booking.find().sort({ checkInDate: 1 }); // Fetch all bookings
 
     res.render('hotelbooking', {
-        title: "Book a Room",
-        activePage: "book",
-        hotels,
-        roomTypes,
-        year,
-        selectedHotel,
-        imgURL
+      title: "Book a Room",
+      activePage: "book",
+      hotels,
+      roomTypes,
+      year,
+      selectedHotel,
+      imgURL,
+      bookings // send bookings to EJS
     });
+  } catch (err) {
+    console.error("❌ Error fetching bookings:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
 
 // Handle Booking Form Submission & Save to MongoDB
 app.post('/book', async (req, res) => {
